@@ -4,7 +4,7 @@
 
 
 int menu(void);
-char * adicionar(char *lista, char *newsub);
+char * adicionar(char *lista, char *nome);
 char * remover(char *lista, char *nome);
 int listar(char *lista);
 
@@ -16,6 +16,7 @@ int main()
     char nome[20];
 
     lista = (char *)malloc(sizeof(char));
+    strcpy(lista, "\0");
 
     //testes
     //lista = (char *)malloc(34* sizeof(char));
@@ -32,21 +33,30 @@ int main()
         {
             case 1:
             printf("Digite um nome para ser adicionado:");
-            scanf("%[^\n]s", nome);
-            lista = adicionar(lista, nome);
-            printf("Sua lista: %s\n", lista);
+            if (scanf("%[^\n]s", nome) == 1) {
+                lista = adicionar(lista, nome);
+                printf("Sua lista: %s\n", lista);
+                break;
+            }
+            printf("Nao foi possivel ler.\n");
             break;
             
+
             case 2:
             printf("Digite um nome para ser removido:");
-            //scanf("%[^\n]s", nome);
-            lista = remover(lista, nome);
-            printf("Sua lista: %s\n", lista); 
+            if (scanf("%[^\n]s", nome) == 1) {
+                lista = remover(lista, nome);
+                printf("Sua lista: %s\n", lista); 
+                break;
+            }
+            printf("Nao foi possivel ler.\n");
             break;
+            
 
             case 3:
             listar(lista);
             break;
+
 
             case 4:
             free(lista);
@@ -70,50 +80,52 @@ int menu(void)
 		printf("\t 3. Listar\n");
 		printf("\t 4. Sair\n");
 		printf("-- Digite sua escolha: ");
-		scanf("%d", &c);
+        if (scanf("%d", &c) == 1) {
+            continue;
+        } else {
+        printf("Failed to read integer.\n");
+        break;
+        }
+
 	} while (c <= 0 || c > 4);
 
 	getchar();
 	return c;
 }
 
-char *adicionar(char *before, char *newsub)
+char *adicionar(char *lista, char *nome)
 {
     
-    int new_length = strlen(newsub);
-    int before_length = strlen(before);
-    //printf("%d", new_length);
-    //printf("%d", before_length);
-    
-  
+    int remove = strlen(nome);
+    int list = strlen(lista);
     char *after;
 
 
-    after = (char *)malloc((before_length + new_length + 1) * sizeof(char));
+    after = (char *)malloc((list + remove + 1) * sizeof(char));
 
 
 
     int j = 0;
     int k = 0;
   
-    while (j < (before_length + new_length))
+    while (j < (list + remove))
     {
-        if (j < before_length)
+        if (j < list)
         {
-            after[j] = before[j];
+            after[j] = lista[j];
             j++;
         }
 
         else
         {
-            after[j] = newsub[k];
+            after[j] = nome[k];
             j++;
             k++;
         }
     }
   
     after[j] = '\0';
-
+    free(lista);
     return after;
 }
 
@@ -123,26 +135,28 @@ char * remover(char *lista, char *nome)
     int j = 0;
     int i = 0;
     int remove = strlen(nome);
-    int list = strlen(lista);
+    int list = strlen(lista) + 1;
     char *after;
 
     after = (char *)malloc((list) * sizeof(char));
   
-    while (i < list)
+    while (i < (list))
     {
         if (strstr(&lista[i], nome) == &lista[i])
         {  
             after = (char *)realloc(after, sizeof(char) * (list - remove));
             i += remove;
         }
-        
-        after[j] = lista[i];
-        j++;
-        i++;
-    }
-  
-    after[j] = '\0';
+        if (strstr(&lista[i], nome) != &lista[i])
+        {
+            after[j] = lista[i];
+            j++;
+            i++;
+        }
 
+    }
+    
+    free(lista);
     return after;
 }
 
