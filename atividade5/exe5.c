@@ -21,27 +21,20 @@ int main(void){
         printf("Digite a idade: ");
         scanf("%d", &pessoas[i].idade);
         getchar();
-        printf("Digite o telefone: ");
+        printf("Digite a sua altura: ");
         scanf("%d", &pessoas[i].altura);
         getchar();
         printf("Deseja parar? [sim para parar]: ");
         scanf("%[^\n]s", escolha);
         getchar();
+        i++;
         if (strcmp(escolha, "sim") == 0 || strcmp(escolha, "Sim") == 0 || strcmp(escolha, "s") == 0){
             for (int j = 0; j < i; j++){
-                printf("%s", pessoas[j].nome);
-                printf("%d", pessoas[j].idade);
-                printf("%d", pessoas[j].altura);
+                printf("Nome: %s, Idade: %d, Altura: %d\n", pessoas[j].nome, pessoas[j].idade, pessoas[j].altura);
+                
             }
-
+            free(pessoas);
+            return(0);
         }
-
-
-        i++;
-
-
-
-
-
     }
 }
