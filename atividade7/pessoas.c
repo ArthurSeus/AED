@@ -6,7 +6,7 @@ void menu(int * opc);
 
 struct Pessoa
 {
-    char nome[10]; 
+    char nome[30]; 
     int idade;
     long telefone;
 };
@@ -56,10 +56,10 @@ int main(void){
                     if (strcmp(pessoas[*variavel].nome, nome) == 0){
                         if ((*variavel + 1) == *num_usuarios){
                             for (*loop_char = 0; *loop_char < 10; *loop_char = *loop_char + 1){
-                                pessoas[*variavel].nome[*loop_char] = NULL;
+                                pessoas[*variavel].nome[*loop_char] = '\0';
                             }
-                            pessoas[*variavel].idade = NULL;
-                            pessoas[*variavel].telefone = NULL;
+                            pessoas[*variavel].idade = 0;
+                            pessoas[*variavel].telefone = 0;
 
                         }else{
                             for (*outra_variavel = *variavel; *outra_variavel < (*num_usuarios - 1); *outra_variavel = *outra_variavel + 1){
@@ -70,10 +70,10 @@ int main(void){
                                 pessoas[*outra_variavel].telefone = pessoas[*outra_variavel + 1].telefone;
                             }
                             for (*loop_char = 0; *loop_char < 10; *loop_char = *loop_char + 1){
-                                    pessoas[*num_usuarios].nome[*loop_char] = NULL;
+                                    pessoas[*num_usuarios].nome[*loop_char] = '\0';
                                 }
-                                pessoas[*num_usuarios].idade = NULL;
-                                pessoas[*num_usuarios].telefone = NULL;
+                                pessoas[*num_usuarios].idade = 0;
+                                pessoas[*num_usuarios].telefone = 0;
                         }
                         *num_usuarios = *num_usuarios - 1;
                     }
