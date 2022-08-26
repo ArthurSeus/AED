@@ -1,0 +1,79 @@
+Arthur Seus - 21102520
+
+formatacao: https://web.stanford.edu/class/cs106b/resources/style_guide.html
+
+Exercicio 2 {
+programa que armazena nomes em string dinamica
+}
+
+videodrive atividade 1: https://drive.google.com/file/d/1ffWMyjqa4IltpBfJALUaUtJdAdjRFHbm/view?usp=sharing
+videodrive atividade 2: https://drive.google.com/file/d/1ids8zj9S8MhVSJeKga2zov91P75i8Z08/view?usp=sharing
+
+Teste 1-
+adicionar o mesmo nome varias vezes na string;
+lista = 'arthurarthurarthur'
+remover 'arthur' da lista;
+lista = ''
+
+valgrind teste 1 {
+==15156== Memcheck, a memory error detector
+==15156== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==15156== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==15156== Command: ./a.out
+==15156== Parent PID: 4735
+==15156== 
+==15156== 
+==15156== HEAP SUMMARY:
+==15156==     in use at exit: 0 bytes in 0 blocks
+==15156==   total heap usage: 10 allocs, 10 frees, 2,146 bytes allocated
+==15156== 
+==15156== All heap blocks were freed -- no leaks are possible
+==15156== 
+==15156== For lists of detected and suppressed errors, rerun with: -s
+==15156== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+}
+
+Teste 2
+utilizar todas opcoes sem digitar nada, apenas '\n'
+
+valgrind teste 2 {
+==16562== Memcheck, a memory error detector
+==16562== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==16562== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==16562== Command: ./a.out
+==16562== Parent PID: 4735
+==16562== 
+==16562== 
+==16562== HEAP SUMMARY:
+==16562==     in use at exit: 0 bytes in 0 blocks
+==16562==   total heap usage: 4 allocs, 4 frees, 2,050 bytes allocated
+==16562== 
+==16562== All heap blocks were freed -- no leaks are possible
+==16562== 
+==16562== For lists of detected and suppressed errors, rerun with: -s
+==16562== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+}
+
+Teste 3
+adicionar nomes na lista;
+lista = 'arthurcarlosjose'
+remover o nome no meio;
+lista = 'arthurjose'
+
+valgrind teste 3 {
+==16876== Memcheck, a memory error detector
+==16876== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==16876== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==16876== Command: ./a.out
+==16876== Parent PID: 4735
+==16876== 
+==16876== 
+==16876== HEAP SUMMARY:
+==16876==     in use at exit: 0 bytes in 0 blocks
+==16876==   total heap usage: 8 allocs, 8 frees, 2,114 bytes allocated
+==16876== 
+==16876== All heap blocks were freed -- no leaks are possible
+==16876== 
+==16876== For lists of detected and suppressed errors, rerun with: -s
+==16876== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+}
