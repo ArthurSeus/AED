@@ -1,0 +1,6 @@
+As atividades estao nas branchs respectivas de cada semana.
+
+
+Para compilar e testar:
+gcc -Wall main.c -o myfile
+valgrind --leak-check=yes --log-file=valgrind.rpt ./myfile
