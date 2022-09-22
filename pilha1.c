@@ -1,14 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <string.h>
 #define MAX 10
 //const int MAX = 10;
+
 
 typedef struct{
     char nome[30];
     int idade;
-}Pessoa;
- 
+}Pessoa; 
+
 typedef struct{
     Pessoa pessoas[MAX];
     int topo;
@@ -27,19 +29,20 @@ typedef struct{
 // •
 // Apaga todos os elementos (CLEAR)
 
-void RESET(Pilha * pilha){
-    //pilha->pessoas = NULL;
+Pilha * RESET(Pilha * pilha){
+    pilha = (Pilha *)malloc(sizeof(Pilha));
     pilha->topo = 0;
     pilha->base = 0;
     pilha->limite = MAX;
+    return pilha;
 }
 
 bool EMPTY(Pilha * pilha){
-    return pilha->topo = 0;
+    return pilha->topo == 0;
 }
 
 bool FULL(Pilha * pilha){
-    return pilha->topo = MAX;
+    return pilha->topo == MAX;
 }
 
 void CLEAR(Pilha * pilha){
@@ -64,7 +67,8 @@ void POP(Pilha *pilha, Pessoa *pessoa){
     pilha->topo--;
 
     *pessoa = pilha->pessoas[pilha->topo];
-    printf("%d", pessoa->idade);
+    pilha->pessoas[pilha->topo].idade = 0;
+    pilha->pessoas[pilha->topo].nome[0] = '\0';
 }
 
 bool PUSH(Pilha *pilha, Pessoa *pessoa){
@@ -80,30 +84,31 @@ bool PUSH(Pilha *pilha, Pessoa *pessoa){
 }
 
 void Listar(Pilha * pilha){
-    Pilha * tmp;
-    Pessoa * ptmp;
-    ptmp = (Pessoa *)malloc(sizeof(Pessoa));
-    tmp = (Pilha *)malloc(sizeof(Pilha));
-    RESET(tmp);
+    if(EMPTY(pilha))
+        return;
+    Pilha * tmp = RESET(tmp);
+    Pessoa * ptmp = (Pessoa *)malloc(sizeof(Pessoa));;
     printf("Listando\n");
+    while(!EMPTY(pilha)){
         POP(pilha, ptmp);
         PUSH(tmp, ptmp);
-        printf("%s", ptmp->nome);
-        printf("%d", ptmp->idade);
-    //while(!EMPTY(pilha)){
-
-        
+        printf("Nome:%s | ", ptmp->nome);
+        printf("Idade:%d\n", ptmp->idade);
     }
-
-
+    while(!EMPTY(tmp)){
+        POP(tmp, ptmp);
+        PUSH(pilha, ptmp);
+    }
+    free(tmp);
+    free(ptmp);
+}
 
 int main(void){
     int opc;
-    Pilha * pilha;
-    Pessoa * tmp;
-    tmp = (Pessoa *)malloc(sizeof(Pessoa));
-    pilha = (Pilha *)malloc(sizeof(Pilha));
-    RESET(pilha);
+    Pessoa * tmp = (Pessoa *)malloc(sizeof(Pessoa));
+    Pilha * pilha = RESET(pilha);
+    Pilha * deletaPorNome = RESET(deletaPorNome);
+    char deletaNome[30];
 
     for (;;){
 
@@ -125,25 +130,35 @@ int main(void){
             printf("Digite um nome:");
             scanf("%[^\n]s", tmp->nome);
             printf("Digite a idade:");
-            scanf("%d", &tmp->idade);
+            scanf("%d", &(tmp->idade));
             getchar();
-            printf("%d\n", tmp->idade);
-            printf("%s\n", tmp->nome);
             PUSH(pilha, tmp);
 
             break;
 
         case 1:
-            // tmp->idade = 43;
-            // //*tmp = pilha->pessoas[0];
-            // printf("%d\n", tmp->idade);
+            POP(pilha, tmp);
             
             break;
 
         case 2:
+            printf("Digite um nome:");
+            scanf("%[^\n]s", deletaNome);
+            while(!EMPTY(pilha)){
+                POP(pilha, tmp);
+                if(!(strcmp(tmp->nome, deletaNome) == 0))
+                    PUSH(deletaPorNome, tmp);
+            }
+            while(!EMPTY(deletaPorNome)){
+                POP(deletaPorNome, tmp);
+                PUSH(pilha, tmp);
+            }
+
+            
             break;
 
         case 3:
+            CLEAR(pilha);
             break;
 
         case 4:
@@ -151,6 +166,10 @@ int main(void){
             break;
 
         case 5:
+            free(pilha);
+            free(tmp);
+            free(deletaPorNome);
+            exit(0);
             break;
         
 
