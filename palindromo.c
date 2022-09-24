@@ -41,7 +41,11 @@ void POP(Pilha * pilha, char letra[1]){
     pilha->palavra = realloc(pilha->palavra, (sizeof(char) * pilha->numletras));
 }
 
-
+void CLEAR(Pilha * pilha){
+    free(pilha->palavra);
+    free(pilha);
+    
+}
 
 int main(void){
     char letra[1];
@@ -81,6 +85,7 @@ int main(void){
         printf("Nao é um palindromo!");
     }
 
-
+    CLEAR(pilha);
+    CLEAR(comparar);
 
 }
