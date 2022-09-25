@@ -158,7 +158,7 @@ void remover(int * var, int * var2, void * sentinela, char * nome){
                 return;
             }
 
-            tmp = *tracer;
+            *tmp = tracer;
             tracer = (*tracer + ((sizeof(int)) + (sizeof(char) * 11) + (sizeof(int)) + (sizeof(long)) + (sizeof(void*))));
             *pont = *tracer;
             pAntOld = (void **)(*tracer + ((sizeof(int)) + (sizeof(char) * 11) + (sizeof(int)) + (sizeof(long))));
@@ -174,14 +174,14 @@ void remover(int * var, int * var2, void * sentinela, char * nome){
         }
 
         if(*var == *elementos - 1){
-            tmp = *tracer;
+            *tmp = tracer;
             pProxOld = (void **)(*backTracer + ((sizeof(int)) + (sizeof(char) * 11) + (sizeof(int)) + (sizeof(long)) + (sizeof(void*)))); 
             *pProxOld = NULL;
             *elementos = *elementos - 1;
             free(tmp);
             return;
         }
-        tmp = *tracer;
+        *tmp = tracer;
         tracer = (*tracer + ((sizeof(int)) + (sizeof(char) * 11) + (sizeof(int)) + (sizeof(long)) + (sizeof(void*))));
         pAntOld = (void **)(*tracer + ((sizeof(int)) + (sizeof(char) * 11) + (sizeof(int)) + (sizeof(long))));
         *pAntOld = *backTracer;
@@ -201,24 +201,24 @@ void clear(int * var, void * sentinela){
     void ** tracer = pont;
     void * tmp = NULL;
     void ** pAntOld = NULL;
-    char * nometmp = NULL;
+
 
     for(*var = 0; *var < *elementos; *var = *var + 1){
         
         if(*var == (*elementos - 1)){
-            tmp = *tracer;
+            *tmp = tracer;
             *pont = NULL;
-            free(tmp);
+            free(*tmp);
             *elementos = 0;
             return;
         }
 
-        tmp = *tracer;
+        *tmp = tracer;
         tracer = (*tracer + ((sizeof(int)) + (sizeof(char) * 11) + (sizeof(int)) + (sizeof(long)) + (sizeof(void*))));
         *pont = *tracer;
         pAntOld = (void **)(*tracer + ((sizeof(int)) + (sizeof(char) * 11) + (sizeof(int)) + (sizeof(long))));
         *pAntOld = NULL;
-        free(tmp);
+        free(*tmp);
 
     }
 }
@@ -312,6 +312,7 @@ int main(void){
         case 4:
             clear(var1, sentinela);
             free(pBuffer);
+            free(sentinela);
             exit(0);
             break;     
 
