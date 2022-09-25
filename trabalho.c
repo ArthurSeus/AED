@@ -4,7 +4,7 @@
 
 
 void * criaSentinela(void){
-    void * sentinela = (void *)malloc(sizeof(int) * 2);
+    void * sentinela = (void *)malloc(sizeof(int) + sizeof(int*));
     int * elementos = (int *)sentinela;
     int ** pont = (int **)(sentinela + sizeof(int));
     *elementos = 0;
@@ -15,14 +15,14 @@ void * criaSentinela(void){
 
 void * criaNodo(int * idade, long * telefone, char * nome, int * var, void * sentinela)
 {
-	void * start = (void *)malloc((sizeof(int)) + (sizeof(char) * 11) + (sizeof(int)) + (sizeof(long)) + (sizeof(void) * 2));
+	void * start = (void *)malloc((sizeof(int)) + (sizeof(char) * 11) + (sizeof(int)) + (sizeof(long)) + (sizeof(void**) * 2));
     int * pidade = (int *)(start + (sizeof(int)) + (sizeof(char) * 11));
     long * ptelefone =  (long *)(start + (sizeof(int)) + (sizeof(char) * 11) + (sizeof(int)));
     char * pnome = (char *)(start + (sizeof(int)));
     int * pnumElementos = (int *)start;
     int * elementos = (int*)sentinela;
     void ** pAnt = (void **)(start + ((sizeof(int)) + (sizeof(char) * 11) + (sizeof(int)) + (sizeof(long))));
-    void ** pProx = (void **)(start + ((sizeof(int)) + (sizeof(char) * 11) + (sizeof(int)) + (sizeof(long)) + (sizeof(void))));
+    void ** pProx = (void **)(start + ((sizeof(int)) + (sizeof(char) * 11) + (sizeof(int)) + (sizeof(long)) + (sizeof(void*))));
     for(*var = 0; *var < 11; *var = *var + 1){
         pnome[*var] = nome[*var];
     }
@@ -59,14 +59,13 @@ void inserir(int * var, void * sentinela, int * idade, long * telefone, char * n
     *var = 0;
 
     while((*var < *elementos) && (strcmp(nomeVelho, nomeNovo) < 1)){
-        tracer = (*tracer + ((sizeof(int)) + (sizeof(char) * 11) + (sizeof(int)) + (sizeof(long)) + (sizeof(void))));
-        //**frontTracer = (**frontTracer + ((sizeof(int)) + (sizeof(char) * 11) + (sizeof(int)) + (sizeof(long)) + (sizeof(void))));
+        tracer = (*tracer + ((sizeof(int)) + (sizeof(char) * 11) + (sizeof(int)) + (sizeof(long)) + (sizeof(void*))));
         nomeVelho = (char *)(*tracer + sizeof(int));
         *var = *var + 1;
     }
 
     if(*var == 0){//mudar o sentinela
-        pProxNew = (void **)(nodo + ((sizeof(int)) + (sizeof(char) * 11) + (sizeof(int)) + (sizeof(long)) + (sizeof(void))));
+        pProxNew = (void **)(nodo + ((sizeof(int)) + (sizeof(char) * 11) + (sizeof(int)) + (sizeof(long)) + (sizeof(void*))));
         pAntOld = (void **)(*tracer + ((sizeof(int)) + (sizeof(char) * 11) + (sizeof(int)) + (sizeof(long))));
         *pProxNew = *tracer;
         *pAntOld = nodo;
@@ -75,20 +74,18 @@ void inserir(int * var, void * sentinela, int * idade, long * telefone, char * n
         return ;
     }
 
-     
-    pProxOld = (void **)(*tracer + ((sizeof(int)) + (sizeof(char) * 11) + (sizeof(int)) + (sizeof(long)) + (sizeof(void))));
-    *pProxOld = nodo; 
+    void ** backTracer = (*tracer + ((sizeof(int)) + (sizeof(char) * 11) + (sizeof(int)) + (sizeof(long))));
+    pAntOld = (void **)(*tracer + ((sizeof(int)) + (sizeof(char) * 11) + (sizeof(int)) + (sizeof(long))));
+    *pAntOld = nodo;
+
+    pProxNew = (void **)(nodo + ((sizeof(int)) + (sizeof(char) * 11) + (sizeof(int)) + (sizeof(long)) + sizeof(void*)));
+    *pProxNew = *tracer;
 
     pAntNew = (void **)(nodo + ((sizeof(int)) + (sizeof(char) * 11) + (sizeof(int)) + (sizeof(long))));
-    *pAntNew = tracer;
+    *pAntNew = *backTracer;
 
-    tracer = (*tracer + ((sizeof(int)) + (sizeof(char) * 11) + (sizeof(int)) + (sizeof(long)) + (sizeof(void))));
-
-    pProxNew = (void **)(nodo + ((sizeof(int)) + (sizeof(char) * 11) + (sizeof(int)) + (sizeof(long)) + (sizeof(void))));
-    *pProxNew = tracer;
-
-    pAntOld = (void **)(*tracer + ((sizeof(int)) + (sizeof(char) * 11) + (sizeof(int)) + (sizeof(long)) + (sizeof(void)))); 
-    *pAntOld = nodo;
+    pProxOld = (void **)(*backTracer + ((sizeof(int)) + (sizeof(char) * 11) + (sizeof(int)) + (sizeof(long)) + (sizeof(void*)))); 
+    *pProxOld = nodo;
 
     *elementos = *elementos + 1;
     return ;
@@ -108,7 +105,7 @@ void listar(int * var, void * sentinela){
         printf("Nome:%s|", pnome);
         printf("Idade:%d|", *pidade);
         printf("Telefone:%ld\n", *ptelefone);
-        tracer = (*tracer + ((sizeof(int)) + (sizeof(char) * 11) + (sizeof(int)) + (sizeof(long)) + (sizeof(void))));
+        tracer = (*tracer + ((sizeof(int)) + (sizeof(char) * 11) + (sizeof(int)) + (sizeof(long)) + (sizeof(void*))));
         pidade = (int *)(*tracer  + ((sizeof(int)) + (sizeof(char) * 11)));
         ptelefone = (long *)(*tracer  + (sizeof(int)) + (sizeof(char) * 11) + (sizeof(int)));
         pnome = (char *)(*tracer  + (sizeof(int)));
