@@ -200,23 +200,28 @@ void clear(int * var, void * sentinela){
     void ** tracer = pont;
     void * tmp = NULL;
     void ** pAntOld = NULL;
+    char * nometmp = NULL;
 
     for(*var = 0; *var < *elementos; *var = *var + 1){
         
         if(*var == (*elementos - 1)){
             tmp = *tracer;
+            nometmp = (char *)(tmp + (sizeof(int)));
             *pont = NULL;
+            free(nometmp);
             free(tmp);
             *elementos = 0;
             return;
         }
 
         tmp = *tracer;
+        nometmp = (char *)(tmp + (sizeof(int)));
         tracer = (*tracer + ((sizeof(int)) + (sizeof(char) * 11) + (sizeof(int)) + (sizeof(long)) + (sizeof(void*))));
         *pont = *tracer;
         pAntOld = (void **)(*tracer + ((sizeof(int)) + (sizeof(char) * 11) + (sizeof(int)) + (sizeof(long))));
         *pAntOld = NULL;
         free(tmp);
+        free(nometmp);
         
     }
 }
