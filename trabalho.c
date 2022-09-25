@@ -132,8 +132,6 @@ void remover(int * var, int * var2, void * sentinela, char * nome){
     void ** pont = (void **)(sentinela + sizeof(int));//aponta
     void ** tracer = pont;
     char * pnome = (char *)(*tracer + sizeof(int));
-    int * pidade = (int *)(*tracer  + (sizeof(int)) + (sizeof(char) * 11));
-    long * ptelefone =  (long *)(*tracer  + (sizeof(int)) + (sizeof(char) * 11) + (sizeof(int)));
     void * tmp = NULL;
     void ** pProxOld = NULL;
     void ** pAntOld = NULL;
@@ -200,10 +198,7 @@ void clear(int * var, void * sentinela){
     int * elementos = (int *)sentinela;//numero de elementos
     void ** pont = (void **)(sentinela + sizeof(int));//aponta
     void ** tracer = pont;
-    int * pidade = (int *)(*tracer  + (sizeof(int)) + (sizeof(char) * 11));
-    long * ptelefone =  (long *)(*tracer  + (sizeof(int)) + (sizeof(char) * 11) + (sizeof(int)));
     void * tmp = NULL;
-    void ** pProxOld = NULL;
     void ** pAntOld = NULL;
 
     for(*var = 0; *var < *elementos; *var = *var + 1){
@@ -221,7 +216,6 @@ void clear(int * var, void * sentinela){
         *pont = *tracer;
         pAntOld = (void **)(*tracer + ((sizeof(int)) + (sizeof(char) * 11) + (sizeof(int)) + (sizeof(long))));
         *pAntOld = NULL;
-        char * pnome = (char *)(*tracer + sizeof(int));
         free(tmp);
         
     }
