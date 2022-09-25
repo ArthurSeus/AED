@@ -192,30 +192,17 @@ void remover(int * var, int * var2, void * sentinela, char * nome){
 }
 
 
-void clear(int * var, void * sentinela){
+void clear(int * var, int * var2, void * sentinela){
     int * elementos = (int *)sentinela;//numero de elementos
     void ** pont = (void **)(sentinela + sizeof(int));//aponta
     void ** tracer = pont;
-    void * tmp = NULL;
-    void ** pAntOld = NULL;
+    char * pnome = (char *)(*tracer + sizeof(int));
 
-
-    for(*var = 0; *var < *elementos; *var = *var + 1){
-        
-        if(*var == (*elementos - 1)){
-            tmp = *tracer;
-            *pont = NULL;
-            free(tmp);
-            *elementos = 0;
-            return;
-        }
-        tmp = *tracer;
-        tracer = (*tracer + ((sizeof(int)) + (sizeof(char) * 11) + (sizeof(int)) + (sizeof(long)) + (sizeof(void*))));
-        free(tmp);
-        *pont = *tracer;
-        pAntOld = (void **)(*tracer + ((sizeof(int)) + (sizeof(char) * 11) + (sizeof(int)) + (sizeof(long))));
-        *pAntOld = NULL;
-
+    while(*elementos != 0){
+        remover(var, var2, sentinela, pnome);
+        pont = (void **)(sentinela + sizeof(int));
+        tracer = pont;
+        pnome = (char *)(*tracer + sizeof(int));
     }
 }
 
@@ -229,89 +216,51 @@ int main(void){
     long * telefone =  (long *)(pBuffer + (sizeof(int) * 3) + (sizeof(char) * 10));
     char * nome = (char *)(pBuffer + (sizeof(int) * 3));
     void * sentinela = criaSentinela();
-    
 
-    *idade = 1;
-    *telefone = 1;
-    nome[0] = 'z';
-    nome[1] = 'r';
-    nome[2] = 't';
-    nome[3] = 'h';
-    nome[4] = '\0';
-    inserir(var1, var2, sentinela, idade, telefone, nome);
 
-    //char * abc = (char*)(nodo + sizeof(int));
-    //printf("%s\n", abc);
-    *idade = 2;
-    *telefone = 2;
-    nome[0] = 'b';
-    nome[1] = 'a';
-    nome[2] = 'f';
-    nome[3] = 'a';
-    nome[4] = '\0';
-    //nodo = criaNodo(idade, telefone, nome, var1, sentinela);
-    inserir(var1, var2, sentinela, idade, telefone, nome);
-    *idade = 3;
-    *telefone = 3;
-    nome[0] = 'z';
-    nome[1] = 'z';
-    nome[2] = 't';
-    nome[3] = 'h';
-    nome[4] = '\0';
-    //void * nodo = criaNodo(idade, telefone, nome, var1, sentinela);
-    //inserir(var1, var2, sentinela, idade, telefone, nome);
-    listar(var1, sentinela);
-    nome[0] = 'b';
-    nome[1] = 'a';
-    nome[2] = 'f';
-    nome[3] = 'a';
-    nome[4] = '\0';
-    clear(var1, sentinela);
-    listar(var1, sentinela);
+    for (;;){
 
-//     for (;;){
+        printf("Menu\n");
+        printf("[1]adiciona pessoa\n");
+        printf("[2]remove pessoa\n");
+        printf("[3]lista pessoas\n");
+        printf("[4]Sair\n");
+        printf("Sua escolha: ");
+        scanf("%d", opc);
+        getchar();
 
-//         printf("Menu\n");
-//         printf("[1]adiciona pessoa\n");
-//         printf("[2]remove pessoa\n");
-//         printf("[3]lista pessoas\n");
-//         printf("[4]Sair\n");
-//         printf("Sua escolha: ");
-//         scanf("%d", opc);
-//         getchar();
+        switch (*opc)
+        {
+        case 1:
+            printf("Digite o nome: ");
+            scanf("%[^\n]s", nome);
+            printf("Digite a idade: ");
+            scanf("%d", idade);
+            getchar();
+            printf("Digite o telefone: ");
+            scanf("%ld", telefone);
+            getchar();
+            inserir(var1, var2, sentinela, idade, telefone, nome);
+            break;
 
-//         switch (*opc)
-//         {
-//         case 1:
-//             printf("Digite o nome: ");
-//             scanf("%[^\n]s", nome);
-//             printf("Digite a idade: ");
-//             scanf("%d", idade);
-//             getchar();
-//             printf("Digite o telefone: ");
-//             scanf("%ld", telefone);
-//             getchar();
-//             inserir(var1, var2, sentinela, idade, telefone, nome);
-//             break;
+        case 2:
+            printf("Digite o nome: ");
+            scanf("%[^\n]s", nome);
+            remover(var1, var2, sentinela, nome);
+            break;
 
-//         case 2:
-//             printf("Digite o nome: ");
-//             scanf("%[^\n]s", nome);
-//             remover(var1, var2, sentinela, nome);
-//             break;
+        case 3:
+            listar(var1, sentinela);
+            break;
 
-//         case 3:
-//             listar(var1, sentinela);
-//             break;
+        case 4:
+            clear(var1, var2, sentinela);
+            free(pBuffer);
+            free(sentinela);
+            exit(0);
+            break;     
 
-//         case 4:
-//             clear(var1, sentinela);
-//             free(pBuffer);
-//             free(sentinela);
-//             exit(0);
-//             break;     
+        }
 
-//         }
-
-//     }
+    }
 }
