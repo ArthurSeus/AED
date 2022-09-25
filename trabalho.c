@@ -52,6 +52,7 @@ void inserir(int * var, int * var2, void * sentinela, int * idade, long * telefo
         *elementos = *elementos + 1;
         return;
     }
+
     void ** tracer = pont;
     char * nomeNovo = (char *)(nodo + sizeof(int));
     char * nomeVelho = (char *)(*tracer + sizeof(int));
@@ -76,8 +77,17 @@ void inserir(int * var, int * var2, void * sentinela, int * idade, long * telefo
     }
 
     void **backTracer = pont;
-    for(*var2 = 0; var2 < (var - 1); *var2 = *var2 + 1){
+    for(*var2 = 0; *var2 < (*var - 1); *var2 = *var2 + 1){
         backTracer = (*backTracer + ((sizeof(int)) + (sizeof(char) * 11) + (sizeof(int)) + (sizeof(long)) + (sizeof(void*))));
+    }
+    nomeVelho = (char *)(*backTracer + sizeof(int));
+    if(*var == *elementos){
+        pAntNew = (void **)(nodo + ((sizeof(int)) + (sizeof(char) * 11) + (sizeof(int)) + (sizeof(long))));
+        *pAntNew = *backTracer;
+        pProxOld = (void **)(*backTracer + ((sizeof(int)) + (sizeof(char) * 11) + (sizeof(int)) + (sizeof(long)) + (sizeof(void*)))); 
+        *pProxOld = nodo;
+        *elementos = *elementos + 1;
+        return;
     }
 
     pAntOld = (void **)(*tracer + ((sizeof(int)) + (sizeof(char) * 11) + (sizeof(int)) + (sizeof(long))));
@@ -117,63 +127,105 @@ void listar(int * var, void * sentinela){
     }
 }
 
-// void remover(int * var, void * sentinela){
-//     int * elementos = (int *)sentinela;//numero de elementos
-//     void ** pont = (void **)(sentinela + sizeof(int));//aponta
-    // void ** tracer = pont;
-    // char * pnome = (char *)(*tracer + sizeof(int));
-    // int * pidade = (int *)(*tracer  + (sizeof(int)) + (sizeof(char) * 11));
-    // long * ptelefone =  (long *)(*tracer  + (sizeof(int)) + (sizeof(char) * 11) + (sizeof(int)));
+void remover(int * var, int * var2, void * sentinela, char * nome){
+    int * elementos = (int *)sentinela;//numero de elementos
+    void ** pont = (void **)(sentinela + sizeof(int));//aponta
+    void ** tracer = pont;
+    char * pnome = (char *)(*tracer + sizeof(int));
+    int * pidade = (int *)(*tracer  + (sizeof(int)) + (sizeof(char) * 11));
+    long * ptelefone =  (long *)(*tracer  + (sizeof(int)) + (sizeof(char) * 11) + (sizeof(int)));
+    void * tmp = NULL;
+    void ** pProxOld = NULL;
+    void ** pAntOld = NULL;
 
-    // if(*elementos == 0){
-    //     return;
-    // }
+    if(*elementos == 0){
+        return;
+    }
+    *var = 0;
+    *var2 = 0;
+    while((*var < *elementos) && !(*var2 = (strcmp(pnome, nome) == 0))){
+        tracer = (*tracer + ((sizeof(int)) + (sizeof(char) * 11) + (sizeof(int)) + (sizeof(long)) + (sizeof(void*))));
+        pnome = (char *)(*tracer + sizeof(int));
+        *var = *var + 1;
+    }
 
-    // while((*var < *elementos) && (strcmp(nomeVelho, nomeNovo) < 1)){
+    if(*var2 == 1){
+        if(*var == 0){
+            if(*elementos == 1){
+                tmp = *tracer;
+                *pont = NULL;
+                *elementos = *elementos - 1;
+                free(tmp);
+                return;
+            }
 
+            tmp = *tracer;
+            tracer = (*tracer + ((sizeof(int)) + (sizeof(char) * 11) + (sizeof(int)) + (sizeof(long)) + (sizeof(void*))));
+            *pont = *tracer;
+            pAntOld = (void **)(*tracer + ((sizeof(int)) + (sizeof(char) * 11) + (sizeof(int)) + (sizeof(long))));
+            *pAntOld = NULL;
+            *elementos = *elementos - 1;
+            free(tmp);
+            return;
+        }
 
+        void **backTracer = pont;
+        for(*var2 = 0; *var2 < (*var - 1); *var2 = *var2 + 1){
+            backTracer = (*backTracer + ((sizeof(int)) + (sizeof(char) * 11) + (sizeof(int)) + (sizeof(long)) + (sizeof(void*))));
+        }
 
-    // }
-    // SNodo * excluir;
-    // SNodo * tracer = sent->pFirst;
-    // SNodo * fronttracer = sent->pFirst;
-    // if(strcmp(tracer->pessoa.nome, pessoa->nome) == 0){
-    //     excluir= sent->pFirst;
-//         sent->pFirst = tracer->prox;
-//         free(excluir);
-//         sent->numeroPessoas = sent->numeroPessoas - 1;
-//         return;
-//     }
+        if(*var == *elementos - 1){
+            tmp = *tracer;
+            pProxOld = (void **)(*backTracer + ((sizeof(int)) + (sizeof(char) * 11) + (sizeof(int)) + (sizeof(long)) + (sizeof(void*)))); 
+            *pProxOld = NULL;
+            *elementos = *elementos - 1;
+            free(tmp);
+            return;
+        }
+        tmp = *tracer;
+        tracer = (*tracer + ((sizeof(int)) + (sizeof(char) * 11) + (sizeof(int)) + (sizeof(long)) + (sizeof(void*))));
+        pAntOld = (void **)(*tracer + ((sizeof(int)) + (sizeof(char) * 11) + (sizeof(int)) + (sizeof(long))));
+        *pAntOld = *backTracer;
+        pProxOld = (void **)(*backTracer + ((sizeof(int)) + (sizeof(char) * 11) + (sizeof(int)) + (sizeof(long)) + sizeof(void*)));
+        *pProxOld = *tracer;
+        *elementos = *elementos - 1;
+        free(tmp);
 
-//     while(fronttracer != NULL){
-//         fronttracer = fronttracer->prox;
-
-//         if(strcmp(fronttracer->pessoa.nome, pessoa->nome) == 0){
-//             excluir = fronttracer;
-//             tracer->prox = fronttracer->prox;
-//             free(excluir);
-//             sent->numeroPessoas = sent->numeroPessoas - 1;
-//             return;
-//         }
-
-//         tracer = tracer->prox;
-//     }
+    }
         
-// }
+}
 
 
-// void clear(SLista * sent){
+void clear(int * var, void * sentinela){
+    int * elementos = (int *)sentinela;//numero de elementos
+    void ** pont = (void **)(sentinela + sizeof(int));//aponta
+    void ** tracer = pont;
+    int * pidade = (int *)(*tracer  + (sizeof(int)) + (sizeof(char) * 11));
+    long * ptelefone =  (long *)(*tracer  + (sizeof(int)) + (sizeof(char) * 11) + (sizeof(int)));
+    void * tmp = NULL;
+    void ** pProxOld = NULL;
+    void ** pAntOld = NULL;
 
-//     SNodo * excluir;
-//     SNodo * tracer = sent->pFirst;
-
-//     while(tracer != NULL){
-//         excluir = tracer;
-//         free(excluir);
-//         tracer = tracer->prox;
-//     }
+    for(*var = 0; *var < *elementos; *var = *var + 1){
         
+        if(*var == (*elementos - 1)){
+            tmp = *tracer;
+            *pont = NULL;
+            free(tmp);
+            *elementos = 0;
+            return;
+        }
 
+        tmp = *tracer;
+        tracer = (*tracer + ((sizeof(int)) + (sizeof(char) * 11) + (sizeof(int)) + (sizeof(long)) + (sizeof(void*))));
+        *pont = *tracer;
+        pAntOld = (void **)(*tracer + ((sizeof(int)) + (sizeof(char) * 11) + (sizeof(int)) + (sizeof(long))));
+        *pAntOld = NULL;
+        char * pnome = (char *)(*tracer + sizeof(int));
+        free(tmp);
+        
+    }
+}
 
 
 int main(void){
@@ -187,92 +239,87 @@ int main(void){
     void * sentinela = criaSentinela();
     
 
-    *idade = 1;
-    *telefone = 1;
-    nome[0] = 'z';
-    nome[1] = 'r';
-    nome[2] = 't';
-    nome[3] = 'h';
-    nome[4] = '\0';
+    // *idade = 1;
+    // *telefone = 1;
+    // nome[0] = 'z';
+    // nome[1] = 'r';
+    // nome[2] = 't';
+    // nome[3] = 'h';
+    // nome[4] = '\0';
     //void * nodo = criaNodo(idade, telefone, nome, var1, sentinela);
-    inserir(var1, var2, sentinela, idade, telefone, nome);
+    // inserir(var1, var2, sentinela, idade, telefone, nome);
 
-    //char * abc = (char*)(nodo + sizeof(int));
-    //printf("%s\n", abc);
-    *idade = 2;
-    *telefone = 2;
-    nome[0] = 'b';
-    nome[1] = 'a';
-    nome[2] = 'f';
-    nome[3] = 'a';
-    nome[4] = '\0';
-    //nodo = criaNodo(idade, telefone, nome, var1, sentinela);
-    inserir(var1, var2, sentinela, idade, telefone, nome);
-    *idade = 3;
-    *telefone = 3;
-    nome[0] = 'f';
-    nome[1] = 'r';
-    nome[2] = 't';
-    nome[3] = 'h';
-    nome[4] = '\0';
-    //void * nodo = criaNodo(idade, telefone, nome, var1, sentinela);
-    inserir(var1, var2, sentinela, idade, telefone, nome);
-    listar(var1, sentinela);
-    //printf("%d\n", *prox);
-    //printf("%d", );
-    // adicionar(tmp, sent);
-    // tmp->idade = 2;
-    // tmp->nome[0] = 'b';
-    // adicionar(tmp, sent);
-    //listar(sent);
-    // tmp->nome[0] = 'a';
-    // remover(sent, tmp);
-    // listar(sent);
-    // for (;;){
+    // //char * abc = (char*)(nodo + sizeof(int));
+    // //printf("%s\n", abc);
+    // *idade = 2;
+    // *telefone = 2;
+    // nome[0] = 'b';
+    // nome[1] = 'a';
+    // nome[2] = 'f';
+    // nome[3] = 'a';
+    // nome[4] = '\0';
+    // //nodo = criaNodo(idade, telefone, nome, var1, sentinela);
+    // inserir(var1, var2, sentinela, idade, telefone, nome);
+    // *idade = 3;
+    // *telefone = 3;
+    // nome[0] = 'z';
+    // nome[1] = 'z';
+    // nome[2] = 't';
+    // nome[3] = 'h';
+    // nome[4] = '\0';
+    // //void * nodo = criaNodo(idade, telefone, nome, var1, sentinela);
+    // inserir(var1, var2, sentinela, idade, telefone, nome);
+    // listar(var1, sentinela);
+    // nome[0] = 'b';
+    // nome[1] = 'a';
+    // nome[2] = 'f';
+    // nome[3] = 'a';
+    // nome[4] = '\0';
+    // clear(var1, sentinela);
+    // listar(var1, sentinela);
 
-    //     printf("Menu\n");
-    //     printf("[1]adiciona pessoa\n");
-    //     printf("[2]remove pessoa\n");
-    //     printf("[3]lista pessoas\n");
-    //     printf("[4]Buscar por usuario\n");
-    //     printf("[5]Sair\n");
-    //     printf("Sua escolha: ");
-    //     scanf("%d", opc);
-    //     getchar();
+    for (;;){
 
+        printf("Menu\n");
+        printf("[1]adiciona pessoa\n");
+        printf("[2]remove pessoa\n");
+        printf("[3]lista pessoas\n");
+        printf("[4]Sair\n");
+        printf("Sua escolha: ");
+        scanf("%d", opc);
+        getchar();
 
-    //     switch (*opc)
-    //     {
-    //     case 1:
-    //         printf("Digite o nome: ");
-    //         scanf("%[^\n]s", nome);
-    //         printf("Digite a idade: ");
-    //         scanf("%d", idade);
-    //         getchar();
-    //         printf("Digite o telefone: ");
-    //         scanf("%ld", telefone);
-    //         getchar();
-    //         //inserir(sentinela, criaNodo(nome, idade, telefone));
-    //         break;
+        switch (*opc)
+        {
+        case 1:
+            printf("Digite o nome: ");
+            scanf("%[^\n]s", nome);
+            printf("Digite a idade: ");
+            scanf("%d", idade);
+            getchar();
+            printf("Digite o telefone: ");
+            scanf("%ld", telefone);
+            getchar();
+            inserir(var1, var2, sentinela, idade, telefone, nome);
+            break;
 
-        // case 2:
-        //     printf("Digite o nome: ");
-        //     scanf("%[^\n]s", tmp->nome);
-        //     remover(sent, tmp); 
-        //     break;
+        case 2:
+            printf("Digite o nome: ");
+            scanf("%[^\n]s", nome);
+            remover(var1, var2, sentinela, nome);
+            break;
 
-        // case 3:
-        //     listar(sent);
-        //     break;
+        case 3:
+            listar(var1, sentinela);
+            break;
 
-        // case 4:
-        //     clear(sent);
-        //     free(sent);
-        //     free(tmp);
-        //     exit(0);
-        //     break;     
+        case 4:
+            clear(var1, sentinela);
+            free(pBuffer);
+            exit(0);
+            break;     
 
-    //     }
+        }
 
-    // }
+    }
 }
