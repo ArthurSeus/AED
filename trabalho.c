@@ -37,7 +37,7 @@ void * criaNodo(int * idade, long * telefone, char * nome, int * var, void * sen
 }
 
 
-void inserir(int * var, void * sentinela, int * idade, long * telefone, char * nome){
+void inserir(int * var, int * var2, void * sentinela, int * idade, long * telefone, char * nome){
 
     int * elementos = (int *)sentinela;//numero de elementos
     void * nodo = criaNodo(idade, telefone, nome, var, sentinela);
@@ -64,6 +64,7 @@ void inserir(int * var, void * sentinela, int * idade, long * telefone, char * n
         *var = *var + 1;
     }
 
+
     if(*var == 0){//mudar o sentinela
         pProxNew = (void **)(nodo + ((sizeof(int)) + (sizeof(char) * 11) + (sizeof(int)) + (sizeof(long)) + (sizeof(void*))));
         pAntOld = (void **)(*tracer + ((sizeof(int)) + (sizeof(char) * 11) + (sizeof(int)) + (sizeof(long))));
@@ -74,7 +75,11 @@ void inserir(int * var, void * sentinela, int * idade, long * telefone, char * n
         return ;
     }
 
-    void ** backTracer = (*tracer + ((sizeof(int)) + (sizeof(char) * 11) + (sizeof(int)) + (sizeof(long))));
+    void **backTracer = pont;
+    for(*var2 = 0; var2 < (var - 1); *var2 = *var2 + 1){
+        backTracer = (*backTracer + ((sizeof(int)) + (sizeof(char) * 11) + (sizeof(int)) + (sizeof(long)) + (sizeof(void*))));
+    }
+
     pAntOld = (void **)(*tracer + ((sizeof(int)) + (sizeof(char) * 11) + (sizeof(int)) + (sizeof(long))));
     *pAntOld = nodo;
 
@@ -172,12 +177,13 @@ void listar(int * var, void * sentinela){
 
 
 int main(void){
-    void * pBuffer = (void *)malloc((sizeof(int) * 2) + (sizeof(char) * 11) + sizeof(long) + sizeof(int));
+    void * pBuffer = (void *)malloc((sizeof(int) * 3) + (sizeof(char) * 11) + sizeof(long) + sizeof(int));
     int * opc = (int *)pBuffer;
     int * var1 = (int *)(pBuffer + sizeof(int));
-    int * idade = (int *)(pBuffer + (sizeof(int) * 2) + (sizeof(char) * 10) + sizeof(long));
-    long * telefone =  (long *)(pBuffer + (sizeof(int) * 2) + (sizeof(char) * 10));
-    char * nome = (char *)(pBuffer + (sizeof(int) * 2));
+    int * var2 = (int *)(pBuffer + sizeof(int) * 2);
+    int * idade = (int *)(pBuffer + (sizeof(int) * 3) + (sizeof(char) * 10) + sizeof(long));
+    long * telefone =  (long *)(pBuffer + (sizeof(int) * 3) + (sizeof(char) * 10));
+    char * nome = (char *)(pBuffer + (sizeof(int) * 3));
     void * sentinela = criaSentinela();
     
 
@@ -189,7 +195,7 @@ int main(void){
     nome[3] = 'h';
     nome[4] = '\0';
     //void * nodo = criaNodo(idade, telefone, nome, var1, sentinela);
-    inserir(var1, sentinela, idade, telefone, nome);
+    inserir(var1, var2, sentinela, idade, telefone, nome);
 
     //char * abc = (char*)(nodo + sizeof(int));
     //printf("%s\n", abc);
@@ -201,7 +207,7 @@ int main(void){
     nome[3] = 'a';
     nome[4] = '\0';
     //nodo = criaNodo(idade, telefone, nome, var1, sentinela);
-    inserir(var1, sentinela, idade, telefone, nome);
+    inserir(var1, var2, sentinela, idade, telefone, nome);
     *idade = 3;
     *telefone = 3;
     nome[0] = 'f';
@@ -210,7 +216,7 @@ int main(void){
     nome[3] = 'h';
     nome[4] = '\0';
     //void * nodo = criaNodo(idade, telefone, nome, var1, sentinela);
-    inserir(var1, sentinela, idade, telefone, nome);
+    inserir(var1, var2, sentinela, idade, telefone, nome);
     listar(var1, sentinela);
     //printf("%d\n", *prox);
     //printf("%d", );
