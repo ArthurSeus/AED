@@ -26,6 +26,7 @@ void * criaNodo(int * idade, long * telefone, char * nome, int * var, void * sen
     for(*var = 0; *var < 11; *var = *var + 1){
         pnome[*var] = nome[*var];
     }
+    pnome[10] = '\0';
     
     *pidade = *idade;
     *ptelefone = *telefone;
