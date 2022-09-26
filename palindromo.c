@@ -50,8 +50,9 @@ void CLEAR(Pilha * pilha){
 int main(void){
     char letra[1];
     char letracmp[1];
+    letra[0] = '\0';
     letracmp[0] = '\0';
-    int numeroCompara;
+    int numeroCompara = 0;
     int iguais = 0;
 
     Pilha * pilha = Reset();
@@ -66,7 +67,14 @@ int main(void){
         }
     }
 
-    numeroCompara = (pilha->numletras)/2;
+    if (pilha->numletras % 2 == 1 || pilha->numletras == 0){
+        printf("Nao é um palindromo!\n");
+        CLEAR(pilha);
+        CLEAR(comparar);
+        exit(0);
+    }
+
+    numeroCompara = (pilha->numletras) / 2;
     
     for(int i = 0; i < numeroCompara;i++){
         POP(pilha, letra);
@@ -80,9 +88,9 @@ int main(void){
         }
     }
     if(iguais == numeroCompara){
-        printf("é um palindromo!");
+        printf("é um palindromo!\n");
     }else{
-        printf("Nao é um palindromo!");
+        printf("Nao é um palindromo!\n");
     }
 
     CLEAR(pilha);
