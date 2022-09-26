@@ -1,6 +1,7 @@
-As atividades estao nas branchs respectivas de cada semana.
+Arthur Seus - 21102520
 
+formatacao: https://web.stanford.edu/class/cs106b/resources/style_guide.html
 
-Para compilar e testar:
-gcc -Wall main.c -o myfile
-valgrind --leak-check=yes --log-file=valgrind.rpt ./myfile
+exercicio 7: https://drive.google.com/file/d/1qWrMvzbgzqdDM1jAPZtyPcHsuw5bu3AR/view?usp=sharing
+
+Todos testes a principio funcionando!
