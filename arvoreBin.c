@@ -77,16 +77,17 @@ int VerificaArvore(Nodo ** ppRaiz){
     return 0;
 }
 
-int Limpa(Nodo ** pRaiz){
+void Limpa(Nodo ** pRaiz){
     //int left, right;
     if(*pRaiz == NULL){
-        return 1;
+        return;
     }
 
     Limpa(&((*pRaiz)->left));
     Limpa(&((*pRaiz)->right));
 
     free(*pRaiz);
+    return;
 }
 
 int main(void){
