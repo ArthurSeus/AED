@@ -14,6 +14,7 @@ int descobre(int arr[], int size){
             return test[i];
         }
     }
+    return -999;
 }
 
 int main(void){
@@ -29,5 +30,5 @@ int main(void){
         arr[i] = num;
     }
     int size = sizeof(arr)/sizeof(arr[0]);
-    printf("Numero que falta: %d", descobre(arr, size));
+    printf("Numero que falta: %d\n", descobre(arr, size));
 }
